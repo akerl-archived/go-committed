@@ -1,13 +1,23 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"regexp"
 
+	"github.com/akerl/go-lambda/apigw/events"
+	"github.com/akerl/go-lambda/apigw/router"
 	"github.com/akerl/go-lambda/s3"
-	"github.com/aws/aws-lambda-go/lambda"
+)
+
+var (
+	smsRegex     = regexp.MustCompile(`^/sms$`)
+	userRegex    = regexp.MustCompile(`^/user/([\w-]+)$`)
+	defaultRegex = regexp.MustCompile(`^/.*$`)
 )
 
 type config struct {
+	DefaultUser string `json:"default_user"`
 }
 
 var c config
@@ -26,9 +36,26 @@ func loadConfig() {
 
 func main() {
 	loadConfig()
-	lambda.Start(handler)
+	r := router.Router{
+		Routes: []router.Route{
+			{Path: smsRegex, Handler: smsHandler},
+			{Path: userRegex, Handler: userHandler},
+			{Path: defaultRegex, Handler: defaultHandler},
+		},
+	}
+	r.Start()
 }
 
-func handler() error {
-	return nil
+func defaultHandler(req events.Request) (events.Response, error) {
+	host := req.Headers["Host"]
+	target := fmt.Sprintf("https://%s/user/%s", host, c.DefaultUser)
+	return events.Redirect(target, 307)
+}
+
+func userHandler(req events.Request) (events.Response, error) {
+	return events.Succeed("Placeholder")
+}
+
+func smsHandler(req events.Request) (events.Response, error) {
+	return events.Succeed("Placeholder")
 }

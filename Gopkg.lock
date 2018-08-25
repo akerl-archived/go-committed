@@ -2,17 +2,22 @@
 
 
 [[projects]]
-  digest = "1:2c73359f7de026bb96d5f00bea4e0d163108934589e49844c7abaf6fe728dc73"
+  digest = "1:3e0d2ade74a5e410d6ff2ad491082dbbbaecdb2d67326d64407a1653cc3bc724"
   name = "github.com/akerl/go-lambda"
-  packages = ["s3"]
+  packages = [
+    "apigw/events",
+    "apigw/router",
+    "s3",
+  ]
   pruneopts = "UT"
   revision = "3d505c32ffe120d3e8dab6c6e34e4ad92aa23c7a"
   version = "0.2.3"
 
 [[projects]]
-  digest = "1:7637de64e2bad97a7b9d1665e9cb0f9b709b1ef28d09232da908ead542bf89f0"
+  digest = "1:014e79cf5c422dd0547a87bde33c7f7b3cd29116a96fac8897c7e50f18531dea"
   name = "github.com/aws/aws-lambda-go"
   packages = [
+    "events",
     "lambda",
     "lambda/messages",
     "lambdacontext",
@@ -96,8 +101,9 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/akerl/go-lambda/apigw/events",
+    "github.com/akerl/go-lambda/apigw/router",
     "github.com/akerl/go-lambda/s3",
-    "github.com/aws/aws-lambda-go/lambda",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
