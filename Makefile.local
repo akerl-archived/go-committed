@@ -1,0 +1,3 @@
+PACKAGE = go-committed
+NAMESPACE = github.com/akerl
+OSLIST = linux
