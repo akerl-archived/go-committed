@@ -1,7 +1,7 @@
 go-committed
 =========
 
-[![Build Status](https://img.shields.io/circleci/project/akerl/go-committed/master.svg)](https://circleci.com/gh/akerl/go-committed)
+[![Build Status](https://img.shields.io/travis/com/akerl/go-committed.svg)](https://travis-ci.com/akerl/go-committed)
 [![GitHub release](https://img.shields.io/github/release/akerl/go-committed.svg)](https://github.com/akerl/go-committed/releases)
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://tldrlegal.com/license/mit-license)
 
