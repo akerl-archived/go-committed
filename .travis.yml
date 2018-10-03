@@ -4,14 +4,17 @@ services:
 - docker
 env:
   global:
+  - PATH=$HOME/.local/bin:$PATH
   - PKGFORGE_STATEFILE=/tmp/pkgforge
   - BUCKET=akerl-go-committed
+  - secure: FnrvDrsaacPmgMhm8vpsESNikyaJKEPAMbqSg07ag28wiA2d/nBG4W5Dwbrzv+VGoKgGGTejKvm38xqR61iGqBLjBq9fH8tM68E6pYOLg816ohgr3TE5cV6ZJC3YqvsDqexDSiV21iIEXHF7xHlaMOhQBspcbxJCMyUZNg03COaBbNAr9MJ6ZUNrfHgJbYopkvAYbWJdGPwQTeBQU/30KEFz6OGFvbCtUgvsLyNut1r9W1vam9v6Ffj+4eFW+tvFI2GBTdvGV2M0MshxQ9Yzks7VHGMrZ0eG6CQ5h4EEovVf502HqgKiaZXxztrepnPR6A0MZgbglVPIxvaZKIARcH09i/wip8B0diZIfYr99wpQ+dUwofU+3rksaacPmDxQh6/Dg2WdvGjMb2KFi2e9/N5wjTFmO1TL5ofnv2DqSTAbS+FVJ/rwlqTLrnIbpKx4N2Ck3FdLGopZBXbdBbrPGRkl3VdGcURoq30QEDYpXyoYR8OwwKK1Su+NSEMV4EeDrMs+p9Q83JmLXkDf1S57wPY2AYSlbEeSvWSg7KENii1c+IBvFyGI/KD5bF+LpYg+wx/WCPwINWPuG+7A0z68zKadoeIRFFS6HEAkgPozblVTikfy3NG+ParoqGBLgYCNMT5ES6zIwgSMPoaBvpwfUADrlSckAUIbTQPZcPn2f2Q=
+before_install:
+- pip install --user awscli
 script: make
 deploy:
   provider: script
-  script:
-  - make release || travis_terminate 1
-  - 'aws s3 cp pkg/payload.zip "s3://$BUCKET/lambdas/payload-$TRAVIS_TAG.zip" || travis_terminate 1'
+  script: make release && aws s3 cp pkg/payload.zip "s3://$BUCKET/lambdas/payload-$TRAVIS_TAG.zip"
+    || travis_terminate 1
   skip_cleanup: true
   on:
     tags: true
