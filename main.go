@@ -6,7 +6,7 @@ import (
 	"regexp"
 
 	"github.com/akerl/go-lambda/apigw/events"
-	"github.com/akerl/go-lambda/apigw/router"
+	"github.com/akerl/go-lambda/mux"
 	"github.com/akerl/go-lambda/s3"
 )
 
@@ -36,14 +36,12 @@ func loadConfig() {
 
 func main() {
 	loadConfig()
-	r := router.Router{
-		Routes: []router.Route{
-			{Path: smsRegex, Handler: smsHandler},
-			{Path: userRegex, Handler: userHandler},
-			{Path: defaultRegex, Handler: defaultHandler},
-		},
-	}
-	r.Start()
+	d := mux.NewDispatcher(
+		mux.NewRoute(smsRegex, smsHandler),
+		mux.NewRoute(userRegex, userHandler),
+		mux.NewRoute(defaultRegex, defaultHandler),
+	)
+	mux.Start(d)
 }
 
 func defaultHandler(req events.Request) (events.Response, error) {
